@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "bun run build",
     "lint": "eslint .",
     "preview": "vite preview"
+  },
+  "engines": {
+    "node": "16.x"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.3.0",
