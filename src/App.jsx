@@ -24,14 +24,14 @@ function App () {
   }, [])
 
   return !loading ? (
-    <div className='min-h-screen flex flex-wrap content-between bg-gray-400'>
-      <div className='w-full block'>
+    <div className='min-h-screen flex flex-col bg-gray-50'>
+      <div className='flex-grow'>
         <Header />
-        <main>
+        <main className='px-4 py-8'>
           <Outlet />
         </main>
-        <Footer />
       </div>
+      <Footer />
     </div>
   ) : null
 }

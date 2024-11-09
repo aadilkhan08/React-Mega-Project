@@ -77,18 +77,21 @@ export default function PostForm ({ post }) {
   }, [watch, slugTransform, setValue])
 
   return (
-    <form onSubmit={handleSubmit(submit)} className='flex flex-wrap'>
-      <div className='w-2/3 px-2'>
+    <form
+      onSubmit={handleSubmit(submit)}
+      className='flex flex-wrap p-4 bg-white shadow-lg rounded-lg'
+    >
+      <div className='w-full lg:w-2/3 px-2 mb-4'>
         <Input
           label='Title :'
-          placeholder='Title'
-          className='mb-4'
+          placeholder='Enter the title'
+          className='mb-4 p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500'
           {...register('title', { required: true })}
         />
         <Input
           label='Slug :'
-          placeholder='Slug'
-          className='mb-4'
+          placeholder='Generated slug'
+          className='mb-4 p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500'
           {...register('slug', { required: true })}
           onInput={e => {
             setValue('slug', slugTransform(e.currentTarget.value), {
@@ -101,13 +104,14 @@ export default function PostForm ({ post }) {
           name='content'
           control={control}
           defaultValue={getValues('content')}
+          className='mb-4 border border-gray-300 rounded-lg'
         />
       </div>
-      <div className='w-1/3 px-2'>
+      <div className='w-full lg:w-1/3 px-2'>
         <Input
           label='Featured Image :'
           type='file'
-          className='mb-4'
+          className='mb-4 p-2 border border-gray-300 rounded-lg shadow-sm'
           accept='image/png, image/jpg, image/jpeg, image/gif'
           {...register('image', { required: !post })}
         />
@@ -116,20 +120,20 @@ export default function PostForm ({ post }) {
             <img
               src={appwriteService.getFilePreview(post.featuredImage)}
               alt={post.title}
-              className='rounded-lg'
+              className='w-full h-auto rounded-lg shadow-lg'
             />
           </div>
         )}
         <Select
           options={['active', 'inactive']}
           label='Status'
-          className='mb-4'
+          className='mb-4 p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-blue-500'
           {...register('status', { required: true })}
         />
         <Button
           type='submit'
-          bgColor={post ? 'bg-green-500' : undefined}
-          className='w-full'
+          bgColor={post ? 'bg-green-500' : 'bg-blue-500'}
+          className='w-full py-2 text-white rounded-lg shadow-lg hover:bg-blue-600 transition duration-200'
         >
           {post ? 'Update' : 'Submit'}
         </Button>
