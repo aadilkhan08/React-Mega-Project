@@ -15,12 +15,15 @@ export default function PostForm ({ post }) {
         status: post?.status || 'active'
       }
     })
+  // Add this at the top of the PostForm component to inspect the value of `post`.
 
   const navigate = useNavigate()
   const userData = useSelector(state => state.auth.userData)
 
+
   const submit = async data => {
-    if (post) {
+    if (post && post.$id) {
+      // Make sure post.$id exists before using it
       const file = data.image[0]
         ? await appwriteService.uploadFile(data.image[0])
         : null
