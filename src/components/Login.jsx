@@ -1,28 +1,35 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { login as authLogin } from '../store/authSlice'
-import { Button, Input, Logo } from './index'
+import { login as authLogin } from '../store/authSlice' // Redux login action
+import { Button, Input, Logo } from './index' // Importing UI components
 import { useDispatch } from 'react-redux'
-import authService from '../appwrite/auth'
+import authService from '../appwrite/auth' // Appwrite AuthService
 import { useForm } from 'react-hook-form'
 
 function Login () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { register, handleSubmit } = useForm()
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm()
   const [error, setError] = useState('')
 
+  // Function to handle form submission
   const login = async data => {
-    setError('')
+    setError('') // Clear previous errors
     try {
-      const session = await authService.login(data)
+      const session = await authService.login(data) // Attempt to log in
       if (session) {
-        const userData = await authService.getCurrentUser()
-        if (userData) dispatch(authLogin(userData))
-        navigate('/')
+        const userData = await authService.getCurrentUser() // Fetch user data
+        if (userData) {
+          dispatch(authLogin(userData)) // Dispatch user data to Redux
+          navigate('/') // Redirect to home
+        }
       }
     } catch (error) {
-      setError(error.message)
+      setError(error.message) // Show error message if login fails
     }
   }
 
@@ -53,13 +60,16 @@ function Login () {
               type='email'
               {...register('email', {
                 required: 'Email is required',
-                validate: {
-                  matchPattern: value =>
-                    /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(value) ||
-                    'Please enter a valid email address'
+                pattern: {
+                  value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+                  message: 'Please enter a valid email address'
                 }
               })}
             />
+            {errors.email && (
+              <p className='text-red-600'>{errors.email.message}</p>
+            )}
+
             <Input
               label='Password: '
               type='password'
@@ -68,6 +78,10 @@ function Login () {
                 required: 'Password is required'
               })}
             />
+            {errors.password && (
+              <p className='text-red-600'>{errors.password.message}</p>
+            )}
+
             <Button type='submit' className='w-full'>
               Sign In
             </Button>
